@@ -16,48 +16,46 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/students")
-public class StudentController
-{
+public class StudentController {
+
     @Autowired
     private StudentService studentService;
 
     // Please note there is no way to add students to course yet!
 
-    @GetMapping(value = "/students", produces = {"application/json"})
-    public ResponseEntity<?> listAllStudents()
-    {
+    @GetMapping(value = "/students",
+            produces = {"application/json"})
+    public ResponseEntity<?> listAllStudents() {
         List<Student> myStudents = studentService.findAll();
         return new ResponseEntity<>(myStudents, HttpStatus.OK);
     }
 
     @GetMapping(value = "/Student/{StudentId}",
-                produces = {"application/json"})
+            produces = {"application/json"})
     public ResponseEntity<?> getStudentById(
             @PathVariable
-                    Long StudentId)
-    {
+                    Long StudentId) {
         Student r = studentService.findStudentById(StudentId);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/student/namelike/{name}",
-                produces = {"application/json"})
+            produces = {"application/json"})
     public ResponseEntity<?> getStudentByNameContaining(
-            @PathVariable String name)
-    {
+            @PathVariable
+                    String name) {
         List<Student> myStudents = studentService.findStudentByNameLike(name);
         return new ResponseEntity<>(myStudents, HttpStatus.OK);
     }
 
 
     @PostMapping(value = "/Student",
-                 consumes = {"application/json"},
-                 produces = {"application/json"})
+            consumes = {"application/json"},
+            produces = {"application/json"})
     public ResponseEntity<?> addNewStudent(@Valid
                                            @RequestBody
-                                                   Student newStudent) throws URISyntaxException
-    {
+                                                   Student newStudent) throws URISyntaxException {
         newStudent = studentService.save(newStudent);
 
         // set the location header for the newly created resource
@@ -74,8 +72,7 @@ public class StudentController
             @RequestBody
                     Student updateStudent,
             @PathVariable
-                    long Studentid)
-    {
+                    long Studentid) {
         studentService.update(updateStudent, Studentid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -84,8 +81,7 @@ public class StudentController
     @DeleteMapping("/Student/{Studentid}")
     public ResponseEntity<?> deleteStudentById(
             @PathVariable
-                    long Studentid)
-    {
+                    long Studentid) {
         studentService.delete(Studentid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
