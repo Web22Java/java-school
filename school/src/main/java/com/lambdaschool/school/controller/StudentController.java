@@ -1,8 +1,11 @@
 package com.lambdaschool.school.controller;
 
+import com.lambdaschool.school.model.Course;
 import com.lambdaschool.school.model.Student;
 import com.lambdaschool.school.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,7 +33,11 @@ public class StudentController {
         List<Student> myStudents = studentService.findAll();
         return new ResponseEntity<>(myStudents, HttpStatus.OK);
     }
-
+    @GetMapping(value ="/studentpaging", produces = {"application/json"})
+    public ResponseEntity<?> listAllCoursesByPage(@PageableDefault(page=0, size=3) Pageable pageable) {
+        ArrayList<Student> myCourse = studentService.findAllPageable(pageable);
+        return new ResponseEntity<>(myCourse, HttpStatus.OK);
+    }
     @GetMapping(value = "/Student/{StudentId}",
             produces = {"application/json"})
     public ResponseEntity<?> getStudentById(

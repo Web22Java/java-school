@@ -6,6 +6,8 @@ import com.lambdaschool.school.view.CountStudentsInCourses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ public class CourseController {
     private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @Autowired
+
     private CourseService courseService;
 
     @GetMapping(value = "/courses",
@@ -30,6 +33,12 @@ public class CourseController {
         ArrayList<Course> myCourses = courseService.findAll();
         return new ResponseEntity<>(myCourses, HttpStatus.OK);
     }
+    @GetMapping(value ="/coursespaging", produces = {"application/json"})
+    public ResponseEntity<?> listAllCoursesByPage(@PageableDefault(page=0, size=3) Pageable pageable) {
+        ArrayList<Course> myCourse = courseService.findAllPageable(pageable);
+        return new ResponseEntity<>(myCourse, HttpStatus.OK);
+    }
+
 
     @GetMapping(value = "/studcount",
             produces = {"application/json"})
