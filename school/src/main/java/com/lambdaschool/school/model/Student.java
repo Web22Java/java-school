@@ -19,8 +19,8 @@ public class Student
 
     @ManyToMany
     @JoinTable(name = "studcourses",
-               joinColumns = {@JoinColumn(name = "studid")},
-               inverseJoinColumns = {@JoinColumn(name = "courseid")})
+            joinColumns = {@JoinColumn(name = "studid")},
+            inverseJoinColumns = {@JoinColumn(name = "courseid")})
     @JsonIgnoreProperties("students")
     private List<Course> courses = new ArrayList<>();
 
